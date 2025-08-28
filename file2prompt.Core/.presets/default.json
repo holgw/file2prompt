@@ -1,0 +1,11 @@
+{
+  "Url": "http://localhost:1234/v1/chat/completions",
+  "ApiKey": "apiKey",
+  "Model": "qwen/qwen3-30b-a3b-2507",
+  "WorkingDirectory": "C:\\WorkingDirectory",
+  "Regex": ".*\\.txt",
+  "PromptName": "summarization-prompt",
+  "StartTag": "",
+  "EndTag": "",
+  "OutputFilePostfix": "_Summary.txt"
+}

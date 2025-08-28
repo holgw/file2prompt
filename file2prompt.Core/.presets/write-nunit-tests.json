@@ -1,0 +1,11 @@
+{
+  "Url": "http://localhost:1234/v1/chat/completions",
+  "ApiKey": "apiKey",
+  "Model": "qwen/qwen3-30b-a3b-2507",
+  "WorkingDirectory": "C:\\WorkingDirectory",
+  "Regex": "^(?![I][A-Z])[A-Z].*\\.cs$",
+  "PromptName": "write-csharp-nunit-tests-prompt",
+  "StartTag": "[TESTS]",
+  "EndTag": "[/TESTS]",
+  "OutputFilePostfix": "_Tests.cs"
+}

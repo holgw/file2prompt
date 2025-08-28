@@ -1,0 +1,37 @@
+name: 'Build and Release'
+permissions:
+  contents: 'write'
+'on':
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      matrix:
+        os:
+          - 'windows-latest'
+    steps:
+      - uses: 'actions/checkout@v4'
+      - name: 'Setup .NET'
+        uses: 'actions/setup-dotnet@v4'
+        with:
+          dotnet-version: '8.0.x'
+      - name: 'Extract version from tag'
+        id: 'extract_version'
+        run: "$tag = \"${{ github.ref }}\"\n$version = $tag -replace 'refs/tags/v', ''\necho \"VERSION=$version\" >> $env:GITHUB_ENV\n"
+      - name: 'Restore dependencies'
+        run: 'dotnet restore'
+      - name: 'Build'
+        run: 'dotnet build --configuration Release'
+      - name: 'Create Release Assets'
+        run: "dotnet publish ./file2prompt.Desktop/file2prompt.Desktop.csproj --configuration \"Release\" --framework net8.0 --runtime win-x64 -o ./publish -p:PublishSingleFile=true --self-contained true /p:PublishReadyToRun=true\n"
+      - name: 'Create ZIP archive'
+        run: 'Compress-Archive -Path publish/* -Destination file2prompt_${{ env.VERSION }}.zip'
+      - name: 'Upload Release Asset'
+        uses: 'softprops/action-gh-release@v1'
+        with:
+          files: 'file2prompt_${{ env.VERSION }}.zip'
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
